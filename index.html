@@ -1,51 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Home | MySite</title>
+
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Shared CSS -->
   <link rel="stylesheet" href="../My-Site/Assets/Css/style.css">
 </head>
 
 <body>
-
   <!-- NAVBAR-->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" aria-label="Primary navigation">
+  <nav class="navbar navbar-expand-lg sticky-top shadow-sm" aria-label="Primary navigation">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="Index.html">MySite</a>
+      <a class="navbar-brand fw-bold text-gradient" href="index.html">MySite</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain"
         aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <div class="collapse navbar-collapse" id="navMain">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
           <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="About.html">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="Services.html">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="Contact.html">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+
+          <!-- Theme Toggle -->
+          <li class="nav-item ms-lg-3">
+            <button id="themeToggle" class="btn btn-ghost" aria-label="Toggle theme">🌙</button>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
   <!-- HERO SECTION-->
-  <header id="hero" class="brand-gradient text-white py-5">
+  <header id="hero" class="brand-gradient text-white py-6">
     <div class="container text-center py-5">
       <h1 class="display-4 fw-bold hero-title">Empowering Your Digital Presence</h1>
       <p class="lead mb-4">We design, develop, and deliver modern web solutions that drive impact.</p>
-      <div>
-        <a href="Contact.html" class="btn btn-primary btn-lg me-2">Get a Quote</a>
-        <a href="#features" class="btn btn-outline-light btn-lg me-2">Learn More</a>
-        <a href="Services.html" class="btn btn-outline-light btn-lg">View Services</a>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="contact.html" class="btn btn-primary btn-lg">Get a Quote</a>
+        <a href="#features" class="btn btn-outline-light btn-lg">Learn More</a>
+        <a href="services.html" class="btn btn-outline-light btn-lg">View Services</a>
       </div>
     </div>
   </header>
 
   <main class="container my-5" id="maincontent" tabindex="-1">
-    <!-- FEATURES SECTIONS -->
+    <!-- FEATURES -->
     <section id="features" class="mb-5">
       <div class="text-center mb-4">
         <h2 class="fw-bold">Our Key Services</h2>
@@ -54,45 +61,51 @@
 
       <div class="row g-4">
         <div class="col-md-4">
-          <div class="card h-100 text-center shadow-sm">
-            <div class="card-body">
+          <div class="card h-100 text-center">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">Web Design</h5>
               <p class="card-text">Modern responsive sites with user-centered UI/UX.</p>
-              <a href="Services.html#Service-1" class="btn btn-outline-secondary">View Services</a>
+              <div class="mt-auto">
+                <a href="services.html#Service-1" class="btn btn-outline-secondary btn-sm">View Services</a>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card h-100 text-center shadow-sm">
-            <div class="card-body">
+          <div class="card h-100 text-center">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">SEO Setup</h5>
               <p class="card-text">Basic on-page SEO & analytics to help you get found.</p>
-              <a href="Services.html#Service-2" class="btn btn-outline-secondary">View Services</a>
+              <div class="mt-auto">
+                <a href="services.html#Service-2" class="btn btn-outline-secondary btn-sm">View Services</a>
+              </div>
             </div>
           </div>
         </div>
 
         <div class="col-md-4">
-          <div class="card h-100 text-center shadow-sm">
-            <div class="card-body">
+          <div class="card h-100 text-center">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">Digital Marketing</h5>
               <p class="card-text">Campaigns and strategies tailored to your goals.</p>
-              <a href="Services.html" class="btn btn-outline-secondary">View Services</a>
+              <div class="mt-auto">
+                <a href="services.html#Service-3" class="btn btn-outline-secondary btn-sm">View Services</a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-<!-- TESTIMONIALS CAROUSEL SECTION -->
+<!-- TESTIMONIALS CAROUSEL -->
 <section aria-labelledby="testimonials-label" class="mb-5">
   <div class="text-center mb-4">
     <h3 id="testimonials-label" class="fw-bold">What clients say</h3>
   </div>
 
   <div id="testimonialsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000" aria-label="Testimonials">
-    <div class="carousel-inner">
+    <div class="carousel-inner"> <!-- removed d-flex / justify-content / align-items classes -->
 
       <div class="carousel-item active">
         <div class="card testimonial-card mx-auto text-center">
@@ -132,23 +145,23 @@
 
     </div>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialsCarousel"
-      data-bs-slide="prev" aria-label="Previous testimonial">
+    <button class="carousel-control-prev" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="prev" aria-label="Previous testimonial">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#testimonialsCarousel"
-      data-bs-slide="next" aria-label="Next testimonial">
+    <button class="carousel-control-next" type="button" data-bs-target="#testimonialsCarousel" data-bs-slide="next" aria-label="Next testimonial">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
     </button>
   </div>
 </section>
-    <!--CONTACT LINK-->
+
+
+    <!-- CONTACT CTA -->
     <section id="contact-cta" class="bg-light p-4 rounded text-center">
       <h4 class="mb-2">Ready to start?</h4>
       <p class="mb-3 text-muted">Get a quick quote or start a project today.</p>
       <div>
-        <a href="Contact.html" class="btn btn-primary me-2">Start a Project</a>
-        <a href="Contact.html" class="btn btn-outline-secondary">Contact Us</a>
+        <a href="contact.html" class="btn btn-primary me-2">Start a Project</a>
+        <a href="contact.html" class="btn btn-outline-secondary">Contact Us</a>
       </div>
     </section>
   </main>
@@ -164,11 +177,11 @@
       </div>
     </div>
   </footer>
-  <button id="backToTop" class="btn btn-primary btn-sm rounded-circle" title="Back to Top" aria-label="Back to Top"
-    style="display:none; position:fixed; bottom:20px; right:20px;">↑</button>
-    
+
+  <button id="backToTop" class="btn btn-primary btn-sm rounded-circle" title="Back to Top" aria-label="Back to Top">↑</button>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../My-Site/Assets/Js/main.js"></script>
 </body>
-
 </html>
