@@ -1,13 +1,23 @@
 // assets/js/main.js
 document.addEventListener('DOMContentLoaded', function () {
-  // ---------- Services data (Phase 5) ----------
+  /* ---------- SERVICES DATA ---------- */
   const services = [
     { id: 1, name: "Web Design", summary: "Modern responsive sites", description: "Full website builds using modern standards, responsive layouts, and accessible components.", price_from: 499, duration_days: 7, tags: ["UI/UX", "Responsive"] },
     { id: 2, name: "SEO Setup", summary: "Basic on-page SEO", description: "On-page optimization, sitemap, robots, basic keyword setup, and analytics integration.", price_from: 299, duration_days: 3, tags: ["SEO", "Analytics"] },
     { id: 3, name: "Digital Marketing", summary: "Campaigns & strategy", description: "Paid ads, social strategy, and conversion rate optimisation for scalable growth.", price_from: 399, duration_days: 14, tags: ["Ads", "Strategy"] }
   ];
 
-  // ---------- Render services cards (services.html) ----------
+  /* ---------- ESCAPE HTML ---------- */
+  function escapeHtml(unsafe) {
+    return String(unsafe)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  /* ---------- RENDER SERVICES GRID ---------- */
   const servicesGrid = document.getElementById('servicesGrid');
   if (servicesGrid) {
     services.forEach(s => {
@@ -32,31 +42,25 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // ---------- Populate Modal on Read More click ----------
+  /* ---------- POPULATE SERVICE MODAL ---------- */
   const serviceModal = document.getElementById('serviceModal');
   if (serviceModal) {
     serviceModal.addEventListener('show.bs.modal', function (event) {
       const btn = event.relatedTarget;
+      if (!btn) return;
       const id = Number(btn.getAttribute('data-service-id'));
       const service = services.find(s => s.id === id);
       if (!service) return;
-      const label = serviceModal.querySelector('#serviceModalLabel');
-      const desc = serviceModal.querySelector('#serviceModalDesc');
-      const price = serviceModal.querySelector('#serviceModalPrice');
-      const duration = serviceModal.querySelector('#serviceModalDuration');
-      const tags = serviceModal.querySelector('#serviceModalTags');
-      const contactLink = serviceModal.querySelector('#serviceModalContact');
-
-      label.textContent = service.name;
-      desc.textContent = service.description;
-      price.textContent = `$${service.price_from}`;
-      duration.textContent = service.duration_days;
-      tags.innerHTML = service.tags.map(t => `<span class="badge bg-secondary me-1">${escapeHtml(t)}</span>`).join('');
-      contactLink.href = `contact.html?service=${encodeURIComponent(service.name)}`;
+      serviceModal.querySelector('#serviceModalLabel').textContent = service.name;
+      serviceModal.querySelector('#serviceModalDesc').textContent = service.description;
+      serviceModal.querySelector('#serviceModalPrice').textContent = `$${service.price_from}`;
+      serviceModal.querySelector('#serviceModalDuration').textContent = service.duration_days;
+      serviceModal.querySelector('#serviceModalTags').innerHTML = service.tags.map(t => `<span class="badge bg-secondary me-1">${escapeHtml(t)}</span>`).join('');
+      serviceModal.querySelector('#serviceModalContact').href = `contact.html?service=${encodeURIComponent(service.name)}`;
     });
   }
 
-  // ---------- Simple form validation & fake submit (contact.html) ----------
+  /* ---------- CONTACT FORM VALIDATION ---------- */
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
@@ -65,63 +69,69 @@ document.addEventListener('DOMContentLoaded', function () {
         contactForm.classList.add('was-validated');
         return;
       }
-      // Fake "submit" - show success alert with timestamp
       const alert = document.getElementById('formAlert');
       const now = new Date();
       alert.className = 'alert alert-success';
-      alert.textContent = `Thanks! Your message was sent on ${now.toLocaleString()}. (This is a demo submission.)`;
+      alert.textContent = `Thanks! Your message was sent on ${now.toLocaleString()}. (Demo submission)`;
       alert.classList.remove('d-none');
       contactForm.reset();
       contactForm.classList.remove('was-validated');
-      // Optionally scroll to alert
       alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, false);
   }
 
-  // ---------- Smooth scrolling for internal anchors ----------
+  /* ---------- SMOOTH SCROLL ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').slice(1);
-      if (!targetId) return;
       const target = document.getElementById(targetId);
       if (target) {
         e.preventDefault();
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        // For accessibility: focus the target
         target.setAttribute('tabindex', '-1');
         target.focus({ preventScroll: true });
       }
     });
   });
 
-  // ---------- Back to top ----------
+  /* ---------- BACK TO TOP BUTTON ---------- */
   const backBtn = document.getElementById('backToTop');
-  window.addEventListener('scroll', () => {
-    if (!backBtn) return;
-    if (window.scrollY > 300) backBtn.style.display = 'block'; else backBtn.style.display = 'none';
-  });
   if (backBtn) {
+    window.addEventListener('scroll', () => {
+      backBtn.style.display = window.scrollY > 300 ? 'flex' : 'none';
+    });
     backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  // ---------- Collapse nav on link click (mobile) ----------
+  /* ---------- COLLAPSE NAVBAR ON MOBILE ---------- */
   document.querySelectorAll('.navbar-collapse .nav-link').forEach(link => {
     link.addEventListener('click', () => {
-      const bsCollapse = document.querySelector('.navbar-collapse');
-      if (bsCollapse && bsCollapse.classList.contains('show')) {
-        const collapse = bootstrap.Collapse.getInstance(bsCollapse);
+      const bsCollapseEl = document.querySelector('.navbar-collapse');
+      if (bsCollapseEl && bsCollapseEl.classList.contains('show')) {
+        const collapse = bootstrap.Collapse.getInstance(bsCollapseEl);
         if (collapse) collapse.hide();
       }
     });
   });
 
-  // Escape HTML helper for safety (very small)
-  function escapeHtml(unsafe) {
-    return String(unsafe)
-      .replaceAll('&', '&amp;')
-      .replaceAll('<', '&lt;')
-      .replaceAll('>', '&gt;')
-      .replaceAll('"', '&quot;')
-      .replaceAll("'", '&#039;');
-  }
+  /* ---------- THEME TOGGLE ---------- */
+  const themeToggleButtons = document.querySelectorAll('#themeToggle');
+  const body = document.body;
+  const applyToggleIcon = (btn, dark) => { if (btn) btn.textContent = dark ? '☀️' : '🌙'; };
+
+  // Load saved theme
+  const savedTheme = localStorage.getItem('theme');
+  const isDark = savedTheme === 'dark';
+  if (isDark) body.classList.add('dark-theme');
+  themeToggleButtons.forEach(btn => applyToggleIcon(btn, isDark));
+
+  // Handle toggle
+  themeToggleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      const dark = body.classList.contains('dark-theme');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      themeToggleButtons.forEach(b => applyToggleIcon(b, dark));
+    });
+  });
 });
