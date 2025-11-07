@@ -135,3 +135,76 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 });
+// main.js
+document.addEventListener("DOMContentLoaded", function() {
+
+  // ===================== SIGN UP =====================
+  const signupForm = document.getElementById("signupForm");
+  if (signupForm) {
+    signupForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+      if (users.find(u => u.email === email)) {
+        alert("Email already registered!");
+        return;
+      }
+
+      users.push({ name, email, password });
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("Signup successful! Redirecting to login page...");
+      window.location.href = "login.html";
+    });
+  }
+
+  // ===================== LOGIN =====================
+  const loginForm = document.getElementById("loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const user = users.find(u => u.email === email);
+
+      if (!user) {
+        errorMsg.textContent = "No account found with this email.";
+        return;
+      }
+
+      if (user.password !== password) {
+        errorMsg.textContent = "Incorrect password.";
+        return;
+      }
+
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      alert(`Login successful! Welcome, ${user.name}`);
+      window.location.href = "index.html";
+    });
+  }
+
+  // ===================== NAVBAR SWITCH =====================
+  const loginBtn = document.getElementById("loginBtn");
+  const signupBtn = document.getElementById("signupBtn");
+  const profileNav = document.getElementById("profileNav");
+
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  if (loggedInUser && profileNav) {
+    // Hide login/signup
+    if (loginBtn) loginBtn.style.display = "none";
+    if (signupBtn) signupBtn.style.display = "none";
+
+    // Show profile
+    profileNav.style.display = "block";
+  }
+});
