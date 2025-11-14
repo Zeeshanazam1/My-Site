@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+<button id="logoutBtn" class="btn btn-danger mt-4">Logout</button>
+
+<script>
+document.getElementById("logoutBtn").addEventListener("click", () => {
+  localStorage.removeItem("loggedInUser");
+  alert("You have logged out successfully!");
+  window.location.href = "index.html";
+});
+</script>
+
+
+
+</body>
+</html>
