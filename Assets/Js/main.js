@@ -1,13 +1,13 @@
-// assets/js/main.js
+
 document.addEventListener('DOMContentLoaded', function () {
-  /* ---------- SERVICES DATA ---------- */
+  //SERVICES DATA 
   const services = [
     { id: 1, name: "Web Design", summary: "Modern responsive sites", description: "Full website builds using modern standards, responsive layouts, and accessible components.", price_from: 499, duration_days: 7, tags: ["UI/UX", "Responsive"] },
     { id: 2, name: "SEO Setup", summary: "Basic on-page SEO", description: "On-page optimization, sitemap, robots, basic keyword setup, and analytics integration.", price_from: 299, duration_days: 3, tags: ["SEO", "Analytics"] },
     { id: 3, name: "Digital Marketing", summary: "Campaigns & strategy", description: "Paid ads, social strategy, and conversion rate optimisation for scalable growth.", price_from: 399, duration_days: 14, tags: ["Ads", "Strategy"] }
   ];
 
-  /* ---------- ESCAPE HTML ---------- */
+  // ESCAPE HTML
   function escapeHtml(unsafe) {
     return String(unsafe)
       .replaceAll('&', '&amp;')
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
       .replaceAll("'", '&#039;');
   }
 
-  /* ---------- RENDER SERVICES GRID ---------- */
+  //RENDER SERVICES GRID
   const servicesGrid = document.getElementById('servicesGrid');
   if (servicesGrid) {
     services.forEach(s => {
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- POPULATE SERVICE MODAL ---------- */
+  //POPULATE SERVICE MODAL
   const serviceModal = document.getElementById('serviceModal');
   if (serviceModal) {
     serviceModal.addEventListener('show.bs.modal', function (event) {
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ---------- CONTACT FORM VALIDATION ---------- */
+  //CONTACT FORM VALIDATION
   const contactForm = document.getElementById('contactForm');
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, false);
   }
 
-  /* ---------- SMOOTH SCROLL ---------- */
+  //SMOOTH SCROLL
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').slice(1);
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- BACK TO TOP BUTTON ---------- */
+ //BACK TO TOP BUTTON
   const backBtn = document.getElementById('backToTop');
   if (backBtn) {
     window.addEventListener('scroll', () => {
@@ -103,7 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
     backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 
-  /* ---------- COLLAPSE NAVBAR ON MOBILE ---------- */
   document.querySelectorAll('.navbar-collapse .nav-link').forEach(link => {
     link.addEventListener('click', () => {
       const bsCollapseEl = document.querySelector('.navbar-collapse');
@@ -114,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- THEME TOGGLE ---------- */
+  // THEME TOGGLE
   const themeToggleButtons = document.querySelectorAll('#themeToggle');
   const body = document.body;
   const applyToggleIcon = (btn, dark) => { if (btn) btn.textContent = dark ? '☀️' : '🌙'; };
@@ -208,3 +207,128 @@ document.addEventListener("DOMContentLoaded", function() {
     profileNav.style.display = "block";
   }
 });
+//SAVE USER PROFILE
+const profileForm = document.getElementById("profileForm");
+if (profileForm) {
+  profileForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("Please login first.");
+      return;
+    }
+
+    const name = document.getElementById("profileName").value.trim();
+    const bio = document.getElementById("profileBio").value.trim();
+    const fileInput = document.getElementById("profileImage");
+    let profilePic = user.profilePic || "";
+
+    // If user selected a new picture
+    if (fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function () {
+        profilePic = reader.result;
+
+        updateProfile(user, name, bio, profilePic);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      updateProfile(user, name, bio, profilePic);
+    }
+  });
+}
+
+// Function to update and save profile
+function updateProfile(user, name, bio, profilePic) {
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  // update main user record
+  const index = users.findIndex(u => u.email === user.email);
+  users[index].name = name;
+  users[index].bio = bio;
+  users[index].profilePic = profilePic;
+
+  // save
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // update logged-in user
+  const updatedUser = users[index];
+  localStorage.setItem("loggedInUser", JSON.stringify(updatedUser));
+
+  alert("Profile updated successfully!");
+  window.location.reload();
+}
+// ===================== LOAD PROFILE DATA =====================
+const profileName = document.getElementById("displayProfileName");
+const profileBio = document.getElementById("displayProfileBio");
+const profilePic = document.getElementById("displayProfilePic");
+
+let currentUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if (currentUser && profileName) {
+  profileName.textContent = currentUser.name || "No Name";
+  profileBio.textContent = currentUser.bio || "No Bio Added";
+  profilePic.src = currentUser.profilePic || "assets/img/default-avatar.png";
+}
+// ===================== CREATE POST =====================
+const postForm = document.getElementById("postForm");
+if (postForm) {
+  postForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    let user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (!user) {
+      alert("Please login first.");
+      return;
+    }
+
+    const caption = document.getElementById("postCaption").value.trim();
+    const imgInput = document.getElementById("postImage");
+
+    if (imgInput.files.length === 0) {
+      alert("Please select an image.");
+      return;
+    }
+
+    const file = imgInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      const postImage = reader.result;
+      const newPost = {
+        user: user.email,
+        caption,
+        image: postImage,
+        time: Date.now()
+      };
+
+      let posts = JSON.parse(localStorage.getItem("posts")) || [];
+      posts.push(newPost);
+      localStorage.setItem("posts", JSON.stringify(posts));
+
+      alert("Post uploaded!");
+      window.location.reload();
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+// ===================== DISPLAY POSTS =====================
+const postContainer = document.getElementById("postContainer");
+
+if (postContainer) {
+  let posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+  posts.reverse().forEach(post => {
+    const div = document.createElement("div");
+    div.className = "post-card mt-3 p-3 border rounded";
+    div.innerHTML = `
+      <img src="${post.image}" class="img-fluid rounded mb-2" />
+      <p><strong>${post.caption}</strong></p>
+      <small>Posted by: ${post.user}</small>
+    `;
+    postContainer.appendChild(div);
+  });
+}
