@@ -1,23 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../My-Site/Assets/Css/profile.css">
+  <link rel="stylesheet" href="../My-Site/Assets/Css/style.css">
 </head>
-<body>
-    
-<button id="logoutBtn" class="btn btn-danger mt-4">Logout</button>
 
-<script>
-document.getElementById("logoutBtn").addEventListener("click", () => {
-  localStorage.removeItem("loggedInUser");
-  alert("You have logged out successfully!");
-  window.location.href = "index.html";
-});
-</script>
+<body class="bg-light">
 
+  <div class="container py-5">
 
+    <div class="card p-4 shadow-sm mb-5">
+      <h3 class="mb-3">Your Profile</h3>
+
+      <div class="d-flex align-items-center gap-4 mb-4">
+        <img id="displayProfilePic" src="../My-Site/Assets/Img/default-avatar.png" class="profile-pic">
+        <div>
+          <h4 id="displayProfileName" class="mb-1">Your Name</h4>
+          <p id="displayProfileBio" class="text-muted">Your bio will appear here...</p>
+        </div>
+      </div>
+
+      <hr>
+
+      <h5 class="mb-3">Update Profile</h5>
+
+      <form id="profileForm">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Profile Picture</label>
+            <input type="file" id="profileImage" class="form-control">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="profileName" class="form-control" placeholder="Enter full name">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Bio</label>
+            <input type="text" id="profileBio" class="form-control" placeholder="Enter short bio">
+          </div>
+
+          <div class="col-12">
+            <button class="btn btn-primary mt-3 w-100">Save Profile</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="card p-4 shadow-sm mb-5">
+      <h3 class="mb-3">Create a Post</h3>
+
+      <form id="postForm">
+        <div class="mb-3">
+          <label class="form-label">Post Image</label>
+          <input type="file" id="postImage" class="form-control">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Caption</label>
+          <textarea id="postCaption" class="form-control" rows="2" placeholder="Write a caption..."></textarea>
+        </div>
+
+        <button class="btn btn-success w-100">Upload Post</button>
+      </form>
+    </div>
+
+    <div class="card p-4 shadow-sm mb-5">
+      <h3 class="mb-3">Your Posts</h3>
+      <div id="postContainer"></div>
+    </div>
+
+    <button id="logoutBtn" class="btn btn-danger w-100">Logout</button>
+
+  </div>
+
+  <script>
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("loggedInUser");
+      alert("You have logged out successfully!");
+      window.location.href = "login.html";
+    });
+  </script>
+
+  <script src="../My-Site/Assets/Js/main.js"></script>
 
 </body>
 </html>
